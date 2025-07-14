@@ -61,4 +61,17 @@ class AuthController extends Controller
             'token' => $token
         ]);
     }
+
+    public function refreshToken(Request $request)
+    {
+        $user = $request->user();
+
+        // hapus token lama
+        $request->user()->currentAccessToken()->delete();
+
+        // buat token baru
+        $token = $user->createToken('api_token')->plainTextToken;
+
+        return response()->json(['token' => $token]);
+    }
 }

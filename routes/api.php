@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\ProductController;
-use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\RoleMiddleware;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ProductController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -22,4 +22,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware(['auth', RoleMiddleware::class])->group(function () {
         Route::apiResource('products', ProductController::class);
     });
+
+    Route::post('/refresh-token', [AuthController::class, 'refreshToken']);
 });
